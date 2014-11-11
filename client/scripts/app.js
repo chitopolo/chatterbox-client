@@ -1,6 +1,7 @@
 var app = {
   requestUrl: 'https://api.parse.com/1/classes/chatterbox',
-  postMessage: function(message){
+  messageArray: [],
+  send: function(message, username, roomname){
 
   $.ajax({
   // always use this url
@@ -19,23 +20,22 @@ var app = {
     });
   },
 
-  getMessages: function(){
-    $('.chat').html('');
+  fetch: function(){
+     // app.clearMessages();
     $.ajax({
     // always use this url
-      url: this.requestUrl+'?order=-updatedAt ',
+
       type: 'GET',
+      url: this.requestUrl+'?order=-updatedAt',
       // data: JSON.stringify(message),
       contentType: 'application/json; charset=utf-8',
       success: function (data) {
-        console.log('chatterbox: Message received: ', data);
-        setTimeout(
-                  function()
-                  {
-                     app.init();
-                  }, 2000);
-
-      app.logMessages(data['results']);
+      console.log('chatterbox: Message received: ', data);
+      app.messageArray = data['results'];
+      app.addMessage(data['results']);
+      setTimeout(function(){
+           app.init();
+        }, 2000);
 
 
 
@@ -47,22 +47,35 @@ var app = {
       }
     });
   },
-  logMessages: function(data) {
+  clearMessages: function() {
+    $('#chats').empty();
+  },
+  addMessage: function(data) {
+    var cont = $('<div />');
     for(var i = 0; i < 20; i++){
           // $messageDiv = $("<div class='message'/>");
           // var regex = .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-          if(data[i]['text'] && data[i]['username'] && data[i]['roomname']){
-            var username = data[i]['username'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            var text = data[i]['text'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            var roomname = data[i]['roomname'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            $('.chat').append("<div class='message'>" + '<span class="username">' + username +'</span>'+ ": " + text + " <span class='room'> " +roomname + " </span></div> ").html();
-        }
+          var username = ' ';
+          var text = ' ';
+          var roomname = ' ';
+          if(data[i]['username']) username = data[i]['username'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          if(data[i]['text']) text = data[i]['text'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          if(data[i]['roomname']) roomname = data[i]['roomname'].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          cont.append("<div class='message bg-info'>" + '<span class="username">' + username +'</span>'+ ": " + text + " <span class='room'> " +roomname + " </span></div> ");
       };
+      $('#chats').html(cont);
     },
+  sortRooms: function(){
+    var rooms = {};
+    app.messageArray.forEach(function(el){
+      rooms[el.roomname] = el.roomname;
+    });
+    return Object.keys(rooms);
+  },
   init: function(){
-    this.getMessages();
+    this.fetch();
 
-    // setInterval(this.getMessages.bind(this), 3000);
+    // setInterval(this.fetch.bind(this), 3000);
   }
 
 }
@@ -73,7 +86,7 @@ $(document).ready(function(){
   app.init();
 
   $('.send').on('click', function(){
-    app.postMessage($('.newMessage').val());
+    app.send($('.newMessage').val());
 
   });
 

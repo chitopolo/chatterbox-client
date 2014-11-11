@@ -10,7 +10,7 @@ body {
     margin: auto;
     text-align: left;
     background: white;
-    padding: 50px 60px;
+    padding: 15px 15px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
 }
@@ -64,7 +64,6 @@ form input[type=text] {
     margin-bottom:10px;
     padding: 5px;
     margin-bottom: 5px;
-    background-color: #eee;
 }
 
 .chat .username {
@@ -86,8 +85,7 @@ form input[type=text] {
 }
 
 .message{
-    border-bottom: solid #ccc;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 10px;
 }
 
