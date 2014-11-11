@@ -60,6 +60,9 @@ form input[type=text] {
 }
 
 .chat {
+    margin-top:10px;
+    margin-bottom:10px;
+
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
@@ -81,4 +84,15 @@ form input[type=text] {
 
 .spinner img {
     padding: 10px;
+}
+
+.message{
+    border-bottom: solid #ccc;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+
+.username{
+    color:#000;
 }
