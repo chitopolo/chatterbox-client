@@ -62,7 +62,6 @@ form input[type=text] {
 .chat {
     margin-top:10px;
     margin-bottom:10px;
-
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
@@ -95,4 +94,7 @@ form input[type=text] {
 
 .username{
     color:#000;
+}
+.room {
+    color : blue;
 }
